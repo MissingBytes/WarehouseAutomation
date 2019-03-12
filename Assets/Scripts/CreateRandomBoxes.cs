@@ -22,7 +22,7 @@ public class CreateRandomBoxes : MonoBehaviour {
                 GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 // obj.AddComponent<Rigidbody>();
 
-                int height = rand.Next(3, 6);
+                int height = rand.Next(2, 6);
                 Boxes_heights[i] = height;
                 obj.transform.localScale = new Vector3(1, height, 2);//breadth is const =2
 
@@ -61,7 +61,9 @@ public class CreateRandomBoxes : MonoBehaviour {
         //Debug.Log(Boxes_matrix[0, 0]);
        // Debug.Log("AGGREGATE HEIGHT:"+Aggregate_height(Boxes_heights,RPkg_height,RPkg_width,0));
         Debug.Log("AGGREGATE HEIGHT:"+ Aggregate_height(afterPlacing));
-       // Debug.Log("COMPLETE LINES:" + Complete_lines(Boxes_matrix));
+        Debug.Log("COMPLETE LINES:" + Complete_lines(afterPlacing));
+        Debug.Log("HOLES:" + Holes(afterPlacing));
+        Debug.Log("BUMPINESS:" + Bumpiness(afterPlacing));
 
     }
 
@@ -88,11 +90,6 @@ public class CreateRandomBoxes : MonoBehaviour {
                  after_placing[j,i] = 1; 
             }
         }
-
-        //Debug.Log("1:" + after_placing[2,0]);
-        //Debug.Log("2:" + after_placing[0,3]);
-        //Debug.Log("3:" + after_placing[3,3]);
-        //Debug.Log("4:" + after_placing[3,4]);
 
         return after_placing;
     }
@@ -134,7 +131,54 @@ public class CreateRandomBoxes : MonoBehaviour {
         return lines;
     }
 
+    int Holes(int[,] Placed_matrix)
+    {
+        int result = 0;
 
+        for (int j = 0; j < 20; j++)
+            for (int i = 1; i < 8; i++)
+            {
+                if (Placed_matrix[i, j] == 0)
+                {   for (int k = i - 1; k > 0; k--)
+                    {
+                        if (Placed_matrix[k, j] == 1)
+                        {
+                            result++;
+                            break;
+                        }
+                    }
+                }
+            }
+
+        return result;
+    }
+
+
+    int Bumpiness(int[,] Placed_matrix)
+    {
+
+        int[] Boxes_heights = new int[20];
+
+        for (int j = 0; j < 20; j++)
+            for (int i = 0; i < 10; i++)
+            {
+                if (Placed_matrix[i, j] == 1)
+                {
+                    Boxes_heights[j]= 10 - i;
+                    Debug.Log("BXH:" + Boxes_heights[j]);
+                    break;
+                }
+            }
+
+
+        int result=0;
+        for(int i = 1; i < Boxes_heights.Length; i++)
+        {
+            result += Math.Abs(Boxes_heights[i] - Boxes_heights[i - 1]);
+        }
+
+        return result;
+    }
 
 
     //Bad aggregate
