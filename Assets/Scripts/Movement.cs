@@ -6,9 +6,9 @@ using UnityEngine;
 public class Movement : MonoBehaviour {
     Rigidbody cart;
     // Transform Package;
-    Vector3 [] dest = { new Vector3(-2, 0.75f, 6), new Vector3(-12, 0.75f, 3) };
+    Vector3[] dest = { new Vector3(-2, 0.75f, 6), new Vector3(-5, 4, -10) };
     Vector3 current;
-    Vector3[] WayPoints = new Vector3[2];
+    Vector3[] WayPoints = new Vector3[3];
 
     bool cart_loaded = false;
     bool move_z = true;
@@ -27,9 +27,12 @@ public class Movement : MonoBehaviour {
     void Start () {
         
         WayPoints[0] = packages[0].position;
+        WayPoints[2] = new Vector3(-5, 0.75f, -10);
+       // WayPoints[4] = new Vector3(-5, 0.75f, -10);
+
         Debug.Log("WP:"+WayPoints[0]);
 
-        //WayPoints[1] =  dest[0];//new Vector3(-2, 0.75f , 5);//CreateRandomBoxes.dest;
+        
         Debug.Log("DEST:" + WayPoints[1]);
 
         //WayPoints[2] = packages[1].position;
@@ -43,7 +46,9 @@ public class Movement : MonoBehaviour {
 	void Update () {
         dest[0] = CreateRandomBoxes.dest;
         WayPoints[1] = dest[0];
-        
+        //WayPoints[3] = packages[0].position- new Vector3(0,0,2f);
+
+        Debug.Log("WP ctr:"+WayPoint_ctr);
         current = WayPoints[WayPoint_ctr];
 
         MoveTowardsXY(current);
@@ -64,7 +69,7 @@ public class Movement : MonoBehaviour {
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(destination.x, 0.75f, destination.z), step);
 
 
-        Debug.Log(destination);
+        Debug.Log("Moving Towards:"+destination);
         if ((transform.position.z) == (destination.z))
         {
             move_z = false;
@@ -79,12 +84,15 @@ public class Movement : MonoBehaviour {
 
     void Pick_object()
     {
+        int wc_save = WayPoint_ctr;
         if (!cart_loaded)
         {
             // Collider[] nearby_object = Physics.OverlapSphere(cart.transform.position, 1.5f, 1 << 8);
             //    if (nearby_object.Length != 0)
-
-            if (Vector3.Distance(cart.position, packages[package_ctr].position) < 3f)
+            Vector2 a = new Vector2(cart.position.x, cart.position.z);
+            Vector2 b = new Vector2(packages[package_ctr].position.x, packages[package_ctr].position.z);
+            //if (Vector2.Distance(cart.position, packages[package_ctr].position) < 3f)
+            if (Vector2.Distance(a,b) < 3f)
             {
                 packages[package_ctr].GetComponent<Rigidbody>().useGravity = false;
                 packages[package_ctr].transform.parent = cart.transform;
@@ -93,8 +101,10 @@ public class Movement : MonoBehaviour {
                 else
                     packages[package_ctr].transform.position = cart.transform.position + new Vector3(0, 0.25f + packages[package_ctr].transform.localScale.x / 2, 0);
 
-                Debug.Log(packages[package_ctr].name);
+                Debug.Log("Package Name:"+packages[package_ctr].name);
                 cart_loaded = true;
+                //if (wc_save == WayPoint_ctr)
+                 //   WayPoint_ctr++;
 
             }
         }
@@ -112,7 +122,7 @@ public class Movement : MonoBehaviour {
             packages[package_ctr].transform.position = dest[place_ctr] + new Vector3(0, 0, 3);
             packages[package_ctr].GetComponent<Rigidbody>().useGravity = true;
             cart_loaded = false;
-            Debug.Log("Placed object:"+ dest[place_ctr] + new Vector3(0, 0, 3));
+            Debug.Log("Placed object:"+ dest[place_ctr]);
             place_ctr++;
             package_ctr++;
         }
