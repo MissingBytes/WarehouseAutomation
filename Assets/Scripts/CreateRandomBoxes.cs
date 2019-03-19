@@ -91,8 +91,8 @@ public class CreateRandomBoxes : MonoBehaviour {
             }
 
         int position = Max_index(Scores);
-        Debug.Log("POSITION::" + (position+1));
 
+       // position = 21;
 
         if (position < 20)
         {
@@ -125,6 +125,8 @@ public class CreateRandomBoxes : MonoBehaviour {
             //Random_Package.transform.position = new Vector3(-10 + position + RPkg_height / 2f - 0.5f, (RPkg_width / 2f) + 0.25f + max_slice, 9);
             dest = new Vector3(-10 + position + RPkg_height / 2f - 0.5f, (RPkg_width / 2f) + 0.25f + max_slice, 6);
         }
+        Debug.Log("POSITION:" + (position + 1) +" Rotated:"+ rotated);
+
     }
 
 

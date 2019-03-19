@@ -108,10 +108,11 @@ public class Movement : MonoBehaviour {
         if (cart_loaded && (cart.position.x == dest[place_ctr].x && cart.position.z == dest[place_ctr].z))
         {
             packages[package_ctr].transform.parent = null;
-            packages[package_ctr].transform.position = cart.transform.position + new Vector3(0, 7, 3);
+            //packages[package_ctr].transform.position = cart.transform.position + new Vector3(0, 7, 3);
+            packages[package_ctr].transform.position = dest[place_ctr] + new Vector3(0, 0, 3);
             packages[package_ctr].GetComponent<Rigidbody>().useGravity = true;
             cart_loaded = false;
-            Debug.Log("Placed object");
+            Debug.Log("Placed object:"+ dest[place_ctr] + new Vector3(0, 0, 3));
             place_ctr++;
             package_ctr++;
         }
