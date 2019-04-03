@@ -10,7 +10,10 @@ public class CreateRandomBoxes : MonoBehaviour {
 
     public GameObject [] Random_Package;
     public static bool rotated = false;
-    public static Vector3 dest;    // Use this for initialization
+    public static Vector3 [] dest= new  Vector3[5];    // Use this for initialization
+
+
+
     void Start () {
         System.Random rand = new System.Random();
         int [] Boxes_heights = new int[20];
@@ -37,7 +40,7 @@ public class CreateRandomBoxes : MonoBehaviour {
         }
 
         //LOOP for next box placement
-
+        for(int n=0;n<4;n++)
         {
 
             for (int j = 0; j < 20; j++)
@@ -52,14 +55,17 @@ public class CreateRandomBoxes : MonoBehaviour {
 
 
             //Random_Package = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            Random_Package[0].SetActive(true);
+            Random_Package[n].SetActive(true);
             // obj.AddComponent<Rigidbody>();
 
             int RPkg_height = rand.Next(1, 4);
             int RPkg_width = rand.Next(1, 4);
 
-            Random_Package[0].transform.localScale = new Vector3(RPkg_width, RPkg_height, 2);
-            Random_Package[0].transform.position = new Vector3(-5, (RPkg_height / 2f) + 0.25f, -10);
+            //int RPkg_height = 3;
+            //int RPkg_width = 3;
+
+            Random_Package[n].transform.localScale = new Vector3(RPkg_width, RPkg_height, 2);
+            Random_Package[n].transform.position = new Vector3(-5+5*n, (RPkg_height / 2f) + 0.25f, -10);
             //Random_Package.gameObject.name = "Random_Package";
 
 
@@ -120,7 +126,7 @@ public class CreateRandomBoxes : MonoBehaviour {
 
 
                 //Random_Package.transform.position = new Vector3(-10 + position + RPkg_width / 2f - 0.5f, (RPkg_height / 2f) + 0.25f + max_slice, 9);
-                dest = new Vector3(-10 + position + RPkg_width / 2f - 0.5f, (RPkg_height / 2f) + 0.25f + max_slice, 6);
+                dest[n] = new Vector3(-10 + position + RPkg_width / 2f - 0.5f, (RPkg_height / 2f) + 0.25f + max_slice, 6);
             }
 
             else
@@ -140,9 +146,9 @@ public class CreateRandomBoxes : MonoBehaviour {
                 {
                     Boxes_heights[i] = max_slice + RPkg_width;
                 }
-                Random_Package[0].transform.Rotate(0, 0, 90);
+                Random_Package[n].transform.Rotate(0, 0, 90);
                 //Random_Package.transform.position = new Vector3(-10 + position + RPkg_height / 2f - 0.5f, (RPkg_width / 2f) + 0.25f + max_slice, 9);
-                dest = new Vector3(-10 + position + RPkg_height / 2f - 0.5f, (RPkg_width / 2f) + 0.25f + max_slice, 6);
+                dest[n] = new Vector3(-10 + position + RPkg_height / 2f - 0.5f, (RPkg_width / 2f) + 0.25f + max_slice, 6);
             }
             Debug.Log("POSITION:" + (position + 1) + " Rotated:" + rotated);
 

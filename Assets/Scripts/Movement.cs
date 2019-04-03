@@ -6,9 +6,9 @@ using UnityEngine;
 public class Movement : MonoBehaviour {
     Rigidbody cart;
     // Transform Package;
-    Vector3[] dest = { new Vector3(-2, 0.75f, 6), new Vector3(-5, 4, -10) };
+    Vector3[] dest = new Vector3[5];
     Vector3 current;
-    Vector3[] WayPoints = new Vector3[3];
+    Vector3[] WayPoints = new Vector3[10];
 
     bool cart_loaded = false;
     bool move_z = true;
@@ -25,18 +25,16 @@ public class Movement : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+
+        for (int i = 0; i < packages.Length; i++)
+            WayPoints[i*2] = packages[i].position;      
         
-        WayPoints[0] = packages[0].position;
-        WayPoints[2] = new Vector3(-5, 0.75f, -10);
-       // WayPoints[4] = new Vector3(-5, 0.75f, -10);
 
         Debug.Log("WP:"+WayPoints[0]);
 
         
         Debug.Log("DEST:" + WayPoints[1]);
 
-        //WayPoints[2] = packages[1].position;
-        //WayPoints[3] = dest[1];
 
         cart = GetComponent<Rigidbody>();
 
@@ -44,11 +42,18 @@ public class Movement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        dest[0] = CreateRandomBoxes.dest;
-        WayPoints[1] = dest[0];
+
+        for (int i = 0; i < packages.Length; i++)
+            dest[i] = CreateRandomBoxes.dest[i];
+        //dest[1] = CreateRandomBoxes.dest[1];
+
+        for (int i = 0; i < packages.Length; i++)
+            WayPoints[i*2+1] = dest[i];
+        //WayPoints[1] = dest[0];
+        //WayPoints[3] = dest[1];
         //WayPoints[3] = packages[0].position- new Vector3(0,0,2f);
 
-        Debug.Log("WP ctr:"+WayPoint_ctr);
+        Debug.Log("WP ctr:"+WayPoint_ctr+" WP="+WayPoints[WayPoint_ctr]);
         current = WayPoints[WayPoint_ctr];
 
         MoveTowardsXY(current);
@@ -97,11 +102,11 @@ public class Movement : MonoBehaviour {
                 packages[package_ctr].GetComponent<Rigidbody>().useGravity = false;
                 packages[package_ctr].transform.parent = cart.transform;
                 if(!CreateRandomBoxes.rotated)
-                    packages[package_ctr].transform.position = cart.transform.position + new Vector3(0, 0.25f+ packages[package_ctr].transform.localScale.y/2, 0);
+                    packages[package_ctr].transform.position = cart.transform.position + new Vector3(0, 1+ packages[package_ctr].transform.localScale.y/2f, 0);
                 else
-                    packages[package_ctr].transform.position = cart.transform.position + new Vector3(0, 0.25f + packages[package_ctr].transform.localScale.x / 2, 0);
+                    packages[package_ctr].transform.position = cart.transform.position + new Vector3(0, 1 + packages[package_ctr].transform.localScale.x / 2f, 0);
 
-                Debug.Log("Package Name:"+packages[package_ctr].name);
+                Debug.Log("Picked up:"+packages[package_ctr].name);
                 cart_loaded = true;
                 //if (wc_save == WayPoint_ctr)
                  //   WayPoint_ctr++;
