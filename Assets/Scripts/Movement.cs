@@ -56,7 +56,7 @@ public class Movement : MonoBehaviour {
         Debug.Log("WP ctr:"+WayPoint_ctr+" WP="+WayPoints[WayPoint_ctr]);
         current = WayPoints[WayPoint_ctr];
 
-        MoveTowardsXY(current);
+        MoveTowardsXY(current,1);
         Pick_object();
         Place_object();
 
@@ -87,6 +87,14 @@ public class Movement : MonoBehaviour {
         }
     }
 
+    void MoveTowardsXY(Vector3 destination, int x)
+    {
+        float step = 3 * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(destination.x, 0.75f, destination.z), step);
+        if ((transform.position.x) == (destination.x) && (transform.position.z) == (destination.z))
+            WayPoint_ctr++;
+    }
+
     void Pick_object()
     {
         int wc_save = WayPoint_ctr;
@@ -101,10 +109,10 @@ public class Movement : MonoBehaviour {
             {
                 packages[package_ctr].GetComponent<Rigidbody>().useGravity = false;
                 packages[package_ctr].transform.parent = cart.transform;
-                if(!CreateRandomBoxes.rotated)
-                    packages[package_ctr].transform.position = cart.transform.position + new Vector3(0, 1+ packages[package_ctr].transform.localScale.y/2f, 0);
+                if(!CreateRandomBoxes.rotated[package_ctr])
+                    packages[package_ctr].transform.position = cart.transform.position + new Vector3(0, 0.75f + packages[package_ctr].transform.localScale.y/2f, 0);
                 else
-                    packages[package_ctr].transform.position = cart.transform.position + new Vector3(0, 1 + packages[package_ctr].transform.localScale.x / 2f, 0);
+                    packages[package_ctr].transform.position = cart.transform.position + new Vector3(0, 0.75f + packages[package_ctr].transform.localScale.x /2f, 0);
 
                 Debug.Log("Picked up:"+packages[package_ctr].name);
                 cart_loaded = true;
@@ -118,9 +126,11 @@ public class Movement : MonoBehaviour {
 
     void Place_object()
     {
+        Vector2 cart2D = new Vector2(cart.position.x, cart.position.z);
+        Vector2 dest2D = new Vector2(dest[place_ctr].x, dest[place_ctr].z);
 
-        //if (cart_loaded && cart.position == dest[place_ctr])
-        if (cart_loaded && (cart.position.x == dest[place_ctr].x && cart.position.z == dest[place_ctr].z))
+        //if (cart_loaded && (cart.position.x == dest[place_ctr].x && cart.position.z == dest[place_ctr].z))
+        if (cart_loaded && Vector3.Distance(cart2D,dest2D) <0.3f)
         {
             packages[package_ctr].transform.parent = null;
             //packages[package_ctr].transform.position = cart.transform.position + new Vector3(0, 7, 3);

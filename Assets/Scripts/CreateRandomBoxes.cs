@@ -9,7 +9,7 @@ public class CreateRandomBoxes : MonoBehaviour {
     public Material RPkg_color;
 
     public GameObject [] Random_Package;
-    public static bool rotated = false;
+    public static bool [] rotated = new bool[4];
     public static Vector3 [] dest= new  Vector3[5];    // Use this for initialization
 
 
@@ -62,7 +62,7 @@ public class CreateRandomBoxes : MonoBehaviour {
             int RPkg_width = rand.Next(1, 4);
 
             //int RPkg_height = 3;
-            //int RPkg_width = 3;
+            //int RPkg_width = 1;
 
             Random_Package[n].transform.localScale = new Vector3(RPkg_width, RPkg_height, 2);
             Random_Package[n].transform.position = new Vector3(-5+5*n, (RPkg_height / 2f) + 0.25f, -10);
@@ -131,7 +131,7 @@ public class CreateRandomBoxes : MonoBehaviour {
 
             else
             {
-                rotated = true;
+                rotated[n] = true;
                 position -= 20;
                 int[] Slice = new int[RPkg_height];
 
