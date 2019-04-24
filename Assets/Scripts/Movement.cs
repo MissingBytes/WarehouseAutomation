@@ -27,20 +27,7 @@ public class Movement : MonoBehaviour {
     void Start () {
        // WayPoints[0] = packages[0].position;
 
-        for(int i=0;i<4;i++)
-        {
-            WayPoints[i*5+1] = new Vector3(-15, 0.75f, -17);
-            WayPoints[i*5+2] = new Vector3(-15, 0.75f, 6);
-            WayPoints[i*5+3] = new Vector3( 13, 0.75f, 6);
-            WayPoints[i*5+4] = new Vector3( 13, 0.75f, -17);
-        }
-        //WayPoints[1] = new Vector3(-15, 0.75f,-17);
-        //WayPoints[2] = new Vector3(-15, 0.75f,6);
-        //WayPoints[3] = new Vector3( 13, 0.75f,6);
-        //WayPoints[4] = new Vector3( 13, 0.75f,-17);
 
-        //for (int i = 0; i < packages.Length; i++)
-        //    WayPoints[i*2] = packages[i].position;      
 
         cart = GetComponent<Rigidbody>();
 
@@ -48,6 +35,23 @@ public class Movement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        int BYG=0;
+        for (int i = 0; i < 4; i++)
+        {
+
+            if (packages[i].GetComponent<Renderer>().material.color == Color.blue)
+                BYG = 1;
+            if (packages[i].GetComponent<Renderer>().material.color == Color.yellow)
+                BYG = 2;
+            if (packages[i].GetComponent<Renderer>().material.color == Color.green)
+                BYG = 3;
+
+            WayPoints[i * 5 + 1] = new Vector3(-15, 0.75f, -17);
+            WayPoints[i * 5 + 2] = new Vector3(-15, 0.75f, 6-10*(BYG-1));
+            WayPoints[i * 5 + 3] = new Vector3(13, 0.75f,  6-10*(BYG - 1));
+            WayPoints[i * 5 + 4] = new Vector3(13, 0.75f, -17);
+        }
+
 
         for (int i = 0; i < packages.Length; i++)
             dest[i] = CreateRandomBoxes.dest[i];

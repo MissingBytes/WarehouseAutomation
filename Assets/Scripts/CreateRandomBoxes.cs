@@ -6,7 +6,7 @@ using System.Linq;
 
 public class CreateRandomBoxes : MonoBehaviour {
     public Material [] cube_color;
-    public Color[] RBox_colors = new Color[3] { Color.blue, Color.green, Color.yellow };
+     Color[] RBox_colors = new Color[3] { Color.blue, Color.yellow, Color.green};
     public Material RPkg_color;
 
     public GameObject [] Random_Package;
@@ -19,7 +19,7 @@ public class CreateRandomBoxes : MonoBehaviour {
         System.Random rand = new System.Random();
         int [] Boxes_heights = new int[60];
 
-        int[,] Boxes_matrix = new int[10, 20];
+        int[,] Boxes_matrix = new int[10, 60];
 
         int[] fixed_heights = new int[20] {2,3,5,2,6,5,3,3,4,5,6,5,5,3,2,2,5,4,5,3 };
 
@@ -44,10 +44,11 @@ public class CreateRandomBoxes : MonoBehaviour {
         for(int n=0;n<4;n++)
         {
 
-            for (int j = 0; j < 20; j++)
+            for (int j = 0; j < 60; j++) //j columns
             {
+               // Debug.Log(n+" "+j+":"+Boxes_heights[j]);
                 int k = Boxes_heights[j];
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 10; i++) // i th row
                 {
                     if (i >= 10 - k)
                         Boxes_matrix[i, j] = 1; //1 if a block is present 0 if not.
@@ -62,13 +63,13 @@ public class CreateRandomBoxes : MonoBehaviour {
             // RPkg_height = rand.Next(1, 4);
             //int RPkg_width = rand.Next(1, 4);
 
-            int RPkg_height = 3;
+            int RPkg_height = 2;
             int RPkg_width = 3;
 
             Random_Package[n].transform.localScale = new Vector3(RPkg_width, RPkg_height, 2);
             Random_Package[n].transform.position = new Vector3(-5+5*n, (RPkg_height / 2f) + 0.25f, -25);
-            int z_offset = rand.Next(0, 3);
-            Random_Package[n].GetComponent<Renderer>().material.color = RBox_colors[z_offset];
+            int BYG_color = 1;//rand.Next(0, 3);
+            Random_Package[n].GetComponent<Renderer>().material.color = RBox_colors[BYG_color];
             
             //Random_Package.gameObject.name = "Random_Package";
 
@@ -77,17 +78,20 @@ public class CreateRandomBoxes : MonoBehaviour {
 
             float[] Scores = new float[40];
 
+            int Shelf = BYG_color+1;
+
             for (int i = 0; i < Scores.Length; i++)
                 Scores[i] = float.MinValue;
 
             for (int i = 0; i < 20 - RPkg_width; i++)
             {
-                afterPlacing = Placed_matrix(Boxes_matrix, Boxes_heights, RPkg_height, RPkg_width, i);
+                //Debug.Log("pos:"+i + 20 * (Shelf - 1));
+                afterPlacing = Placed_matrix(Boxes_matrix, Boxes_heights, RPkg_height, RPkg_width, i + 20 * (Shelf - 1));
 
-                Scores[i] = -0.8988208556147149f * Aggregate_height(afterPlacing)
-                               + 0.8596853874489735f * Complete_lines(afterPlacing)
-                               - 0.814546246566033f * Holes(afterPlacing)
-                               - 0.4027417007122302f * Bumpiness(afterPlacing);
+                Scores[i] = -0.8988208556147149f * Aggregate_height(afterPlacing, Shelf)
+                               + 0.8596853874489735f * Complete_lines(afterPlacing, Shelf)
+                               - 0.814546246566033f * Holes(afterPlacing, Shelf)
+                               - 0.4027417007122302f * Bumpiness(afterPlacing, Shelf);
                // Debug.Log("SCORE::" + i + ":" + Scores[i]);
 
 
@@ -96,13 +100,13 @@ public class CreateRandomBoxes : MonoBehaviour {
             if (RPkg_width != RPkg_height)
                 for (int i = 0; i < 20 - RPkg_height; i++)
                 {
-                    afterPlacing = Placed_matrix(Boxes_matrix, Boxes_heights, RPkg_width, RPkg_height, i);
+                    afterPlacing = Placed_matrix(Boxes_matrix, Boxes_heights, RPkg_width, RPkg_height, i + 20 * (Shelf - 1));
 
-                    Scores[i + 20] = -0.8988208556147149f * Aggregate_height(afterPlacing)
-                                   + 0.8596853874489735f * Complete_lines(afterPlacing)
-                                   - 0.814546246566033f * Holes(afterPlacing)
-                                   - 0.4027417007122302f * Bumpiness(afterPlacing);
-                   // Debug.Log("SCORE::" + (i + 20) + ":" + Scores[i + 20]);
+                    Scores[i + 20] = -0.8988208556147149f * Aggregate_height(afterPlacing,Shelf)
+                                   + 0.8596853874489735f * Complete_lines(afterPlacing, Shelf)
+                                   - 0.814546246566033f * Holes(afterPlacing, Shelf)
+                                   - 0.4027417007122302f * Bumpiness(afterPlacing, Shelf);
+                    //Debug.Log("SCORE::" + (i + 20) + ":" + Scores[i + 20]);
 
                 }
 
@@ -122,7 +126,7 @@ public class CreateRandomBoxes : MonoBehaviour {
                 }
                 int max_slice = Slice.Max();
 
-                for (int i = position; i < position + RPkg_width; i++)
+                for (int i = position + 20 * (Shelf - 1); i < position + 20 * (Shelf - 1) + RPkg_width; i++)
                 {
                     Boxes_heights[i] = max_slice + RPkg_height;
 
@@ -130,7 +134,7 @@ public class CreateRandomBoxes : MonoBehaviour {
 
 
                 //Random_Package.transform.position = new Vector3(-10 + position + RPkg_width / 2f - 0.5f, (RPkg_height / 2f) + 0.25f + max_slice, 9);
-                dest[n] = new Vector3(-10 + position + RPkg_width / 2f - 0.5f, (RPkg_height / 2f) + 0.25f + max_slice, 6);
+                dest[n] = new Vector3(-10 + position + RPkg_width / 2f - 0.5f, (RPkg_height / 2f) + 0.25f + max_slice, 6 - 10 * BYG_color);
             }
 
             else
@@ -146,15 +150,16 @@ public class CreateRandomBoxes : MonoBehaviour {
                 }
                 int max_slice = Slice.Max();
 
-                for (int i = position; i < position + RPkg_height; i++)
+                for (int i = position + 20*(Shelf-1); i < position+ 20*(Shelf-1) + RPkg_height; i++)
                 {
                     Boxes_heights[i] = max_slice + RPkg_width;
                 }
                 Random_Package[n].transform.Rotate(0, 0, 90);
                 //Random_Package.transform.position = new Vector3(-10 + position + RPkg_height / 2f - 0.5f, (RPkg_width / 2f) + 0.25f + max_slice, 9);
-                dest[n] = new Vector3(-10 + position + RPkg_height / 2f - 0.5f, (RPkg_width / 2f) + 0.25f + max_slice, 6 );
+                dest[n] = new Vector3(-10 + position + RPkg_height / 2f - 0.5f, (RPkg_width / 2f) + 0.25f + max_slice, 6 - 10 * BYG_color);
             }
-            Debug.Log("POSITION:" + (position + 1) + " Rotated:" + rotated[n]);
+            //Debug.Log("======================================================================");
+            Debug.Log("POSITION:" + (position + 1) + " Rotated:" + rotated[n]+"BYG:"+ BYG_color);
 
         }//END OF PLACEMENT
 
@@ -177,7 +182,8 @@ public class CreateRandomBoxes : MonoBehaviour {
         }
 
         int max_slice = Slice.Max();
-
+        //Debug.Log("INSIDEPLACEDMAT:" + (position + RPkg_width -1));
+       // Debug.Log("J:" + (10 - max_slice));
         for (int j = 10 - RPkg_height -max_slice; j < 10-max_slice; j++)
         {
             for (int i = position; i < position+RPkg_width; i++)
@@ -189,10 +195,10 @@ public class CreateRandomBoxes : MonoBehaviour {
         return after_placing;
     }
 
-    int Aggregate_height(int[,] Placed_matrix)
+    int Aggregate_height(int[,] Placed_matrix, int Shelf)
     {
         int Aggregate = 0;
-        for(int j=0;j<20; j++)
+        for(int j=20*(Shelf-1);j< 20 * (Shelf); j++)
             for (int i = 0; i< 10; i++)
             {
                 if (Placed_matrix[i, j] == 1)
@@ -204,13 +210,13 @@ public class CreateRandomBoxes : MonoBehaviour {
         return Aggregate;
     }
 
-    int Complete_lines(int[,] Placed_matrix)
+    int Complete_lines(int[,] Placed_matrix, int Shelf)
     {
         int lines = 0;
         for (int i = 0; i < 10; i++)
         {
             int flag = 1;
-            for (int j = 0; j < 20; j++)
+            for (int j = 20 * (Shelf-1); j < 20 * (Shelf); j++)
             {
                 if (Placed_matrix[i, j] == 0)
                 {
@@ -225,11 +231,11 @@ public class CreateRandomBoxes : MonoBehaviour {
         return lines;
     }
 
-    int Holes(int[,] Placed_matrix)
+    int Holes(int[,] Placed_matrix, int Shelf)
     {
         int result = 0;
 
-        for (int j = 0; j < 20; j++)
+        for (int j = 20 * (Shelf - 1); j < 20 * (Shelf); j++)
             for (int i = 1; i < 8; i++)
             {
                 if (Placed_matrix[i, j] == 0)
@@ -248,15 +254,16 @@ public class CreateRandomBoxes : MonoBehaviour {
     }
 
 
-    int Bumpiness(int[,] Placed_matrix)
+    int Bumpiness(int[,] Placed_matrix, int Shelf)
     {
 
         int[] Boxes_heights = new int[20];
 
-        for (int j = 0; j < 20; j++)
+       // for (int j = 20 * (Shelf - 1); j < 20 * (Shelf); j++)
+        for (int j = 0; j < 20 ; j++)
             for (int i = 0; i < 10; i++)
             {
-                if (Placed_matrix[i, j] == 1)
+                if (Placed_matrix[i, 20 * (Shelf - 1)+j] == 1)
                 {
                     Boxes_heights[j]= 10 - i;
                     break;
