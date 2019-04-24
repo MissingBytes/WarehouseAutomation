@@ -5,7 +5,8 @@ using UnityEngine;
 using System.Linq;
 
 public class CreateRandomBoxes : MonoBehaviour {
-    public Material cube_color;
+    public Material [] cube_color;
+    public Color[] RBox_colors = new Color[3] { Color.blue, Color.green, Color.yellow };
     public Material RPkg_color;
 
     public GameObject [] Random_Package;
@@ -16,13 +17,13 @@ public class CreateRandomBoxes : MonoBehaviour {
 
     void Start () {
         System.Random rand = new System.Random();
-        int [] Boxes_heights = new int[20];
+        int [] Boxes_heights = new int[60];
 
         int[,] Boxes_matrix = new int[10, 20];
 
         int[] fixed_heights = new int[20] {2,3,5,2,6,5,3,3,4,5,6,5,5,3,2,2,5,4,5,3 };
 
-        for (int j = 0; j < 1; j++)
+        for (int j = 0; j < 3; j++)
         {
             for (int i = 0; i < 20; i++)
             {
@@ -30,12 +31,12 @@ public class CreateRandomBoxes : MonoBehaviour {
                 // obj.AddComponent<Rigidbody>();
 
                 int height = rand.Next(2, 6);//fixed_heights[i];//
-                Boxes_heights[i] = height;
+                Boxes_heights[j*20+i] = height;
                 obj.transform.localScale = new Vector3(1, height, 2);//breadth is const =2
                 obj.gameObject.name = "Exisiting_Pacakge:"+(i + 1).ToString();
 
                 obj.transform.position = new Vector3(i - 10, (height / 2f)+0.25f, 9+j*-10);
-                obj.GetComponent<Renderer>().material = cube_color;
+                obj.GetComponent<Renderer>().material = cube_color[j];
             }
         }
 
@@ -58,14 +59,17 @@ public class CreateRandomBoxes : MonoBehaviour {
             Random_Package[n].SetActive(true);
             // obj.AddComponent<Rigidbody>();
 
-            int RPkg_height = rand.Next(1, 4);
-            int RPkg_width = rand.Next(1, 4);
+            // RPkg_height = rand.Next(1, 4);
+            //int RPkg_width = rand.Next(1, 4);
 
-            //int RPkg_height = 3;
-            //int RPkg_width = 1;
+            int RPkg_height = 3;
+            int RPkg_width = 3;
 
             Random_Package[n].transform.localScale = new Vector3(RPkg_width, RPkg_height, 2);
-            Random_Package[n].transform.position = new Vector3(-5+5*n, (RPkg_height / 2f) + 0.25f, -10);
+            Random_Package[n].transform.position = new Vector3(-5+5*n, (RPkg_height / 2f) + 0.25f, -25);
+            int z_offset = rand.Next(0, 3);
+            Random_Package[n].GetComponent<Renderer>().material.color = RBox_colors[z_offset];
+            
             //Random_Package.gameObject.name = "Random_Package";
 
 
@@ -148,9 +152,9 @@ public class CreateRandomBoxes : MonoBehaviour {
                 }
                 Random_Package[n].transform.Rotate(0, 0, 90);
                 //Random_Package.transform.position = new Vector3(-10 + position + RPkg_height / 2f - 0.5f, (RPkg_width / 2f) + 0.25f + max_slice, 9);
-                dest[n] = new Vector3(-10 + position + RPkg_height / 2f - 0.5f, (RPkg_width / 2f) + 0.25f + max_slice, 6);
+                dest[n] = new Vector3(-10 + position + RPkg_height / 2f - 0.5f, (RPkg_width / 2f) + 0.25f + max_slice, 6 );
             }
-            Debug.Log("POSITION:" + (position + 1) + " Rotated:" + rotated);
+            Debug.Log("POSITION:" + (position + 1) + " Rotated:" + rotated[n]);
 
         }//END OF PLACEMENT
 
