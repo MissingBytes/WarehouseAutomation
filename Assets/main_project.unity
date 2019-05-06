@@ -828,10 +828,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cube_color: []
-  RBox_colors:
-  - {r: 0, g: 0, b: 1, a: 1}
-  - {r: 0, g: 1, b: 0, a: 1}
-  - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   RPkg_color: {fileID: 0}
   Random_Package: []
 --- !u!4 &535298302
@@ -1044,7 +1040,7 @@ Transform:
   m_GameObject: {fileID: 720053736}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -31.4}
-  m_LocalScale: {x: 100, y: -0.5, z: 100}
+  m_LocalScale: {x: 100, y: 0.5, z: 100}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -1245,10 +1241,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 368fa937a89cab84489b4edabde14baf, type: 2}
   - {fileID: 2100000, guid: f39d995a6d28ec5409e1cbd9217bcfa3, type: 2}
   - {fileID: 2100000, guid: d56df460d63c9cd4abbc58e5314e2ce9, type: 2}
-  RBox_colors:
-  - {r: 0, g: 0, b: 1, a: 1}
-  - {r: 0, g: 1, b: 0, a: 1}
-  - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   RPkg_color: {fileID: 2100000, guid: 7cce74d6f7da96e47847f4fd1cd16160, type: 2}
   Random_Package:
   - {fileID: 1207456495}
@@ -1698,10 +1690,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cube_color: []
-  RBox_colors:
-  - {r: 0, g: 0, b: 1, a: 1}
-  - {r: 0, g: 1, b: 0, a: 1}
-  - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   RPkg_color: {fileID: 0}
   Random_Package: []
 --- !u!4 &1267865267

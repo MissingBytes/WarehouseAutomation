@@ -8,7 +8,7 @@ public class Movement : MonoBehaviour {
     // Transform Package;
     Vector3[] dest = new Vector3[5];
     Vector3 current;
-    Vector3[] WayPoints = new Vector3[50];
+    Vector3[] WayPoints = new Vector3[20];
 
     bool cart_loaded = false;
     bool move_z = true;
@@ -68,7 +68,7 @@ public class Movement : MonoBehaviour {
         ////WayPoints[3] = dest[1];
         ////WayPoints[3] = packages[0].position- new Vector3(0,0,2f);
 
-        Debug.Log("WP ctr:"+WayPoint_ctr+" WP="+WayPoints[WayPoint_ctr]);
+        //Debug.Log("WP ctr:"+WayPoint_ctr+" WP="+WayPoints[WayPoint_ctr]);
         current = WayPoints[WayPoint_ctr];
 
         MoveTowardsXY(current,1);
@@ -148,11 +148,12 @@ public class Movement : MonoBehaviour {
         if (cart_loaded && Vector3.Distance(cart2D,dest2D) <0.3f)
         {
             packages[package_ctr].transform.parent = null;
+            packages[package_ctr].transform.localScale -= new Vector3(0.02f, 0, 0);
             //packages[package_ctr].transform.position = cart.transform.position + new Vector3(0, 7, 3);
             packages[package_ctr].transform.position = dest[place_ctr] + new Vector3(0, 0, 3);
             packages[package_ctr].GetComponent<Rigidbody>().useGravity = true;
             cart_loaded = false;
-            Debug.Log("Placed object:"+ dest[place_ctr]);
+           // Debug.Log("Placed object:"+ dest[place_ctr]);
             place_ctr++;
             package_ctr++;
         }
