@@ -66,7 +66,7 @@ public class CreateRandomBoxes : MonoBehaviour {
             int RPkg_width = rand.Next(1, 4);
 
             //int RPkg_height = 3;
-            //int RPkg_width = 3;
+            //int RPkg_width = 2;
 
 
             Random_Package[n].transform.localScale = new Vector3(RPkg_width, RPkg_height, 2);
@@ -107,8 +107,6 @@ public class CreateRandomBoxes : MonoBehaviour {
 
             }
 
-            for (int i = 0; i <= 20 - RPkg_width; i++)
-                Debug.Log("SCORE:" + n + ":" + i + ":" + Scores[i]);
 
             if (RPkg_width != RPkg_height)
                 for (int i = 0; i <= 20 - RPkg_height; i++)
@@ -181,7 +179,7 @@ public class CreateRandomBoxes : MonoBehaviour {
                 dest[n] = new Vector3(-10 + position + RPkg_height / 2f - 0.5f, (RPkg_width / 2f) + 0.25f + max_slice + 0.5f, 6 - 10 * BYG_color);
             }
             //Debug.Log("======================================================================");
-            Debug.Log("POSITION:" + (position + 1) + " Rotated:" + rotated[n]+"BYG:"+ BYG_color);
+            Debug.Log(" Shelf:" + (BYG_color + 1).ToString()+"    Position:" + (position + 1) + "    Rotated:" + rotated[n]);
 
         }//END OF PLACEMENT
 
