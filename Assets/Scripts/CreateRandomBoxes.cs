@@ -215,7 +215,7 @@ public class CreateRandomBoxes : MonoBehaviour {
         return after_placing;
     }
 
-    int Aggregate_height(int[,] Placed_matrix, int Shelf)
+    public int Aggregate_height(int[,] Placed_matrix, int Shelf)
     {
         int Aggregate = 0;
         for(int j=20*(Shelf-1);j< 20 * (Shelf); j++)
